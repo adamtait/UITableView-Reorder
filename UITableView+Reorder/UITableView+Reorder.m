@@ -60,6 +60,9 @@ static void *allowsLongPressToReorderKey = &allowsLongPressToReorderKey;
 				self.rowReorderGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(rowReorderGesture:)];
 				self.delegateForRowReorderGestureRecognizer = [[delegateForReorderGesture alloc] init];
 				self.rowReorderGestureRecognizer.delegate = self.delegateForRowReorderGestureRecognizer;
+                if (self.longPressToReorderMinimumPressDuration) {
+                    self.rowReorderGestureRecognizer.minimumPressDuration = self.longPressToReorderMinimumPressDuration;
+                }
 				DLog( @"Internal long press gesture recognizer and its delegate set for reordering." );
 			} else {
 				self.delegateForRowReorderGestureRecognizer = nil;
@@ -85,6 +88,9 @@ static void *allowsLongPressToReorderDuringEditingKey = &allowsLongPressToReorde
 				self.rowReorderGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(rowReorderGesture:)];
 				self.delegateForRowReorderGestureRecognizer = [[delegateForReorderGesture alloc] init];
 				self.rowReorderGestureRecognizer.delegate = self.delegateForRowReorderGestureRecognizer;
+                if (self.longPressToReorderMinimumPressDuration) {
+                    self.rowReorderGestureRecognizer.minimumPressDuration = self.longPressToReorderMinimumPressDuration;
+                }
 				DLog( @"Internal long press gesture recognizer and its delegate set for reordering." );
 			} else {
 				self.delegateForRowReorderGestureRecognizer = nil;
@@ -98,6 +104,23 @@ static void *allowsLongPressToReorderDuringEditingKey = &allowsLongPressToReorde
 	BOOL allows = [objc_getAssociatedObject( self, allowsLongPressToReorderDuringEditingKey ) boolValue];
 	return allows;
 }
+
+static void *longPressToReorderMinimumPressDurationKey = &longPressToReorderMinimumPressDurationKey;
+- (void) setLongPressToReorderMinimumPressDuration: (CFTimeInterval) longPressToReorderMinimumPressDuration {
+    if( longPressToReorderMinimumPressDuration != self.longPressToReorderMinimumPressDuration ) {
+        objc_setAssociatedObject( self, longPressToReorderMinimumPressDurationKey, [NSNumber numberWithDouble: longPressToReorderMinimumPressDuration], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if( self.rowReorderGestureRecognizer ) {
+            self.rowReorderGestureRecognizer.minimumPressDuration = longPressToReorderMinimumPressDuration;
+            DLog( @"Internal long press gesture recognizer updated with long press to reorder minimum press duration." );
+        }
+    }
+}
+- (CFTimeInterval) longPressToReorderMinimumPressDuration {
+    CFTimeInterval duration = [objc_getAssociatedObject( self, longPressToReorderMinimumPressDurationKey ) doubleValue];
+    return duration;
+}
+
+
 
 - (void) rowReorderGesture: (UIGestureRecognizer *) gesture {
 	UIView	*viewForGesture = gesture.view;

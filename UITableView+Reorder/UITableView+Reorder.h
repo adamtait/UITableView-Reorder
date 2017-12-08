@@ -10,8 +10,9 @@
 
 @interface UITableView (Reorder)
 
-@property (nonatomic) BOOL allowsLongPressToReorder;
-@property (nonatomic) BOOL allowsLongPressToReorderDuringEditing;
+@property (nonatomic) BOOL              allowsLongPressToReorder;
+@property (nonatomic) BOOL              allowsLongPressToReorderDuringEditing;
+@property (nonatomic) CFTimeInterval    longPressToReorderMinimumPressDuration;
 
 // Add this method to your tableview datasource method to correct the number of
 // rows in a section during an active move like this:

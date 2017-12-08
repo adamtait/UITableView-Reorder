@@ -105,6 +105,16 @@ To automatically adjust for this the `tableView:numberOfRowsInSection:` should h
 - (NSInteger) adjustedValueForReorderingOfRowCount: (NSInteger) rowCount forSection: (NSInteger) section;
 ````
 
+
+### Gesture Recognizer Properties
+
+If you want to change the `CFTimeInterval
+UILongPressGestureRecognizer.minimumPressDuration` just set
+`self.tableView.longPressToReorderMinimumPressDuration = 0.5;`.
+Reminder: default is `0.5`.
+
+
+
 ## Acknowledgements
 
 Maybe I just like re-inventing the wheel since there is other code out there to accomplish reordering. I looked at and incorporated parts of all of these other sources:
